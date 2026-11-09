@@ -9,24 +9,27 @@ class WarframeMarket():
     def __str__(self):
         return "Warframe Market"
     
-    def item_orders (self,item_name):
-        if str(item_name).split()[-1].lower()== 'chassis' or str(item_name).split()[-1].lower()== 'systems' or str(item_name).split()[-1].lower()== 'neuroptics':
-            item_name = item_name.strip() +' blueprint' #this fixes the need to add blueprint everytime
-        
-        if str(item_name).split()[-1].lower() == 'prime':
-            item_name = item_name.strip() +' set' #this fixes the need to add 'prime' everytime
-        
-        item_name = str(item_name).replace(' ','_')
-        print(item_name)
-        site = f'{self.link}/orders/item/{item_name}').lower()
+    def item_orders(self, item_name):
+        if str(item_name).split()[-1].lower() in {"chassis", "systems", "neuroptics"}:
+            item_name = item_name.strip() + " blueprint"
+    
+        if str(item_name).split()[-1].lower() == "prime":
+            item_name = item_name.strip() + " set"
+    
+        item_name = str(item_name).replace(" ", "_")
+        url = f"{self.link}/orders/item/{item_name}".lower()
+    
+        response = rq.get(url)
+        response.raise_for_status()
+    
         try:
-            self.all_orders = site.json()
-        except requests.exceptions.JSONDecodeError as exc:
+            self.all_orders = response.json()
+        except rq.exceptions.JSONDecodeError as exc:
             raise ValueError(
                 f"Warframe Market returned non-JSON data "
-                f"(HTTP {site.status_code}): {site.text[:300]!r}"
+                f"(HTTP {response.status_code}): {response.text[:300]!r}"
             ) from exc
-
+    
         return self.all_orders
 
     def getOrders(self,item_name):
