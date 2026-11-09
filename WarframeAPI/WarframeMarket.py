@@ -18,9 +18,15 @@ class WarframeMarket():
         
         item_name = str(item_name).replace(' ','_')
         print(item_name)
-        site = rq.get((f'{self.link}/orders/item/{item_name}').lower())
-                                     
-        self.all_orders = json.loads(site.content)
+        site = f'{self.link}/orders/item/{item_name}').lower()
+        try:
+            self.all_orders = site.json()
+        except requests.exceptions.JSONDecodeError as exc:
+            raise ValueError(
+                f"Warframe Market returned non-JSON data "
+                f"(HTTP {site.status_code}): {site.text[:300]!r}"
+            ) from exc
+
         return self.all_orders
 
     def getOrders(self,item_name):
