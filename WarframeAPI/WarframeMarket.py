@@ -2,7 +2,7 @@ import json
 import requests as rq
 import pandas as pd
 class WarframeMarket():
-    link = 'https://api.warframe.market/v2'
+    link = 'https://api.warframe.market/v2/orders/item/'
     def __init__(self):
         pass
     
