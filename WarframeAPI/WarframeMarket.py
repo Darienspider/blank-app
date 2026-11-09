@@ -2,7 +2,7 @@ import json
 import requests as rq
 import pandas as pd
 class WarframeMarket():
-    link = 'https://api.warframe.market/v2/orders/item/'
+    link = 'https://api.warframe.market/v2'
     def __init__(self):
         pass
     
@@ -18,7 +18,7 @@ class WarframeMarket():
         
         item_name = str(item_name).replace(' ','_')
         print(item_name)
-        site = rq.get((f'{self.link}/orders/item/{item_name}').lower())
+        site = rq.get((f'{self.link}/orders/item/{lower(item_name)}').lower())
         self.all_orders = json.loads(site.content)
         return self.all_orders
 
