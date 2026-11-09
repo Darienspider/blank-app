@@ -18,7 +18,7 @@ class WarframeMarket():
         
         item_name = str(item_name).replace(' ','_')
         print(item_name)
-        site = rq.get((f'{self.link}/orders/item/{lower(item_name)}').lower())
+        site = rq.get((f'{self.link}/orders/item/{str(item_name).lower()}').lower())
         self.all_orders = json.loads(site.content)
         return self.all_orders
 
